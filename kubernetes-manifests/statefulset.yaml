@@ -31,9 +31,9 @@ spec:
               protocol: UDP
           volumeMounts:
             - name: enshrouded-data
-              mountPath: /home/steam/enshrouded/savegame
+              mountPath: /data/enshrouded/savegame
             - name: config-volume
-              mountPath: /home/steam/enshrouded/enshrouded_server.json
+              mountPath: /data/enshrouded/enshrouded_server.json
               subPath: enshrouded_server.json
           resources:
             requests:

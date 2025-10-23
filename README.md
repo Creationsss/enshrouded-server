@@ -8,7 +8,7 @@ Run Enshrouded dedicated server in a container. Optionally includes helm chart f
 
 ## Usage
 
-The processes within the container do **NOT** run as root. Everything runs as the user steam (gid:10000/uid:10000 by default). If you exec into the container, you will drop into `/home/steam` as the steam user. Enshrouded will be installed to `/home/steam/enshrouded`. Any persistent volumes should be mounted to `/home/steam/enshrouded/savegame` and be owned by 10000:10000.
+The processes within the container do **NOT** run as root. Everything runs as the user steam (gid:10000/uid:10000 by default). If you exec into the container, you will drop into `/home/steam` as the steam user. Enshrouded will be installed to `/data/enshrouded`. Any persistent volumes should be mounted to `/data/enshrouded/savegame` and be owned by 10000:10000.
 
 If you absolutely require to run the process in the container as a gid/uid other than 10000, you can build your own image based on my dockerfile. Instructions are covered [Here](https://github.com/jsknnr/enshrouded-server/issues/51)
 
@@ -45,7 +45,7 @@ docker volume create enshrouded-persistent-data
 docker run \
   --detach \
   --name enshrouded-server \
-  --mount type=volume,source=enshrouded-persistent-data,target=/home/steam/enshrouded/savegame \
+  --mount type=volume,source=enshrouded-persistent-data,target=/data/enshrouded/savegame \
   --publish 15637:15637/udp \
   --publish 27015:27015/udp \
   --env=SERVER_NAME='Enshrouded Containerized Server' \
@@ -86,7 +86,7 @@ services:
       - SERVER_SLOTS=16
       - SERVER_IP=0.0.0.0
     volumes:
-      - enshrouded-persistent-data:/home/steam/enshrouded/savegame
+      - enshrouded-persistent-data:/data/enshrouded/savegame
 
 volumes:
   enshrouded-persistent-data:
@@ -115,8 +115,8 @@ services:
     environment:
       - EXTERNAL_CONFIG=1
     volumes:
-      - 'enshrouded-persistent-data:/home/steam/enshrouded/savegame'
-      - ./enshrouded_server_extenal.json:/home/steam/enshrouded/enshrouded_server.json #replaces defaut configuration file
+      - 'enshrouded-persistent-data:/data/enshrouded/savegame'
+      - ./enshrouded_server_extenal.json:/data/enshrouded/enshrouded_server.json #replaces defaut configuration file
     restart: unless-stopped
 
 volumes: 
@@ -140,7 +140,7 @@ podman volume create enshrouded-persistent-data
 podman run \
   --detach \
   --name enshrouded-server \
-  --mount type=volume,source=enshrouded-persistent-data,target=/home/steam/enshrouded/savegame \
+  --mount type=volume,source=enshrouded-persistent-data,target=/data/enshrouded/savegame \
   --publish 15637:15637/udp \
   --publish 27015:27015/udp \
   --env=SERVER_NAME='Enshrouded Containerized Server' \
@@ -160,7 +160,7 @@ Description=Enshrouded Game Server
 
 [Container]
 Image=docker.io/sknnr/enshrouded-dedicated-server:latest
-Volume=enshrouded-persistent-data:/home/steam/enshrouded/savegame
+Volume=enshrouded-persistent-data:/data/enshrouded/savegame
 PublishPort=15637:15637/udp
 PublishPort=27015:27015/udp
 ContainerName=enshrouded-server

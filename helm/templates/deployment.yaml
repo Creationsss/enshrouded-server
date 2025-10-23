@@ -56,7 +56,7 @@ spec:
           protocol: UDP
         volumeMounts:
         - name: data
-          mountPath: /home/steam/enshrouded/savegame
+          mountPath: /data/enshrouded/savegame
         securityContext:
           allowPrivilegeEscalation: false
           
