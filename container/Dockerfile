@@ -40,7 +40,9 @@ RUN groupadd -g $CONTAINER_GID steam \
     && dbus-uuidgen --ensure=/etc/machine-id \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean \
-    && apt-get autoremove -y 
+    && apt-get autoremove -y \
+    && mkdir -p /data \
+    && chown -R $CONTAINER_UID:$CONTAINER_GID /data 
 
 USER steam
 
